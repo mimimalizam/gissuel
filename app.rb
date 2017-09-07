@@ -9,6 +9,8 @@ post "/gateway" do
   repo_url = "https://api.github.com/repos/#{repo}"
 
   case action
+  when "commands"
+    respond_message " `gissuel count-issues owner/repo` \n `gissuel show-last-5 owner/repo`"
   when "count-issues"
     resp = HTTParty.get(repo_url)
     resp = JSON.parse resp.body

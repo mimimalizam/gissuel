@@ -5,19 +5,15 @@ require "json"
 post "/gateway" do
   message = params[:text].gsub(params[:trigger_word],'').strip
 
-  puts "Parametri su"
-  puts "--------------------------------------"
-  puts message
-
-  action, repo = message.split('_').map {|c| c.strip.downcase}
+  action, repo = message.split(' ').map {|c| c.strip.downcase}
   repo_url = "https://api.github.com/repos/#{repo}"
 
   case action
-  when "issues"
+  when "count-issues"
     resp = HTTParty.get(repo_url)
     resp = JSON.parse resp.body
     respond_message "There are #{resp['open_issues_count']} open issues on #{repo}"
-  when "last-5"
+  when "show-last-5"
     resp = HTTParty.get(repo_url + "/issues")
     response = JSON.parse(resp.body)
     last_five = response.last(5)

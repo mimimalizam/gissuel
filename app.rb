@@ -2,37 +2,41 @@ require "sinatra"
 require "httparty"
 require "json"
 
-post "/gateway" do
-  message = params[:text].gsub(params[:trigger_word],'').strip
+class Gissuel < Sinatra::Base
+  post "/gateway" do
+    message = params[:text].gsub(params[:trigger_word],'').strip
 
-  action, repo = message.split(' ').map {|c| c.strip.downcase}
-  repo_url = "https://api.github.com/repos/#{repo}"
 
-  case action
-  when "commands"
-    respond_message " `gissuel count-issues owner/repo` \n `gissuel show-last-5 owner/repo`"
-  when "count-issues"
-    resp = HTTParty.get(repo_url)
-    resp = JSON.parse resp.body
-    respond_message "There are #{resp['open_issues_count']} open issues on #{repo}"
-  when "show-last-5"
-    resp = HTTParty.get(repo_url + "/issues")
-    response = JSON.parse(resp.body)
-    last_five = response.last(5)
-    respond_message "These are last five opened issues:\n" + compose_issues(last_five)
+    puts params
+    action, repo = message.split(' ').map {|c| c.strip.downcase}
+    repo_url = "https://api.github.com/repos/#{repo}"
+
+    case action
+    when "commands"
+      respond_message " `gissuel count-issues owner/repo` \n `gissuel show-last-5 owner/repo`"
+    when "count-issues"
+      resp = HTTParty.get(repo_url)
+      resp = JSON.parse resp.body
+      respond_message "There are #{resp['open_issues_count']} open issues on #{repo}"
+    when "show-last-5"
+      resp = HTTParty.get(repo_url + "/issues")
+      response = JSON.parse(resp.body)
+      last_five = response.last(5)
+      respond_message "These are last five opened issues:\n" + compose_issues(last_five)
+    end
   end
-end
 
-def respond_message message
+  def respond_message message
     content_type :json
-      { :text => message }.to_json
-end
+    { :text => message }.to_json
+  end
 
-def compose_issues last_five
-  last_five.map { |issue| urlize(issue)}
+  def compose_issues last_five
+    last_five.map { |issue| urlize(issue)}
     .join("\n ")
-end
+  end
 
-def urlize(issue)
-  "     <#{issue["html_url"]}|#{issue["title"]}>"
+  def urlize(issue)
+    "     <#{issue["html_url"]}|#{issue["title"]}>"
+  end
 end

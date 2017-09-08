@@ -6,8 +6,6 @@ class Gissuel < Sinatra::Base
   post "/gateway" do
     message = params[:text].gsub(params[:trigger_word],'').strip
 
-
-    puts params
     action, repo = message.split(' ').map {|c| c.strip.downcase}
     repo_url = "https://api.github.com/repos/#{repo}"
 

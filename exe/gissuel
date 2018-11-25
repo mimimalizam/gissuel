@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+
+require "thor"
+require "require_all"
+require "octokit"
+require_rel "/../lib"
+
+Gissuel::CLI.start(ARGV)

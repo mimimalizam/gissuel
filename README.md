@@ -3,15 +3,19 @@ Gissuel
 
 ## Setup
 
-- `hub clone mimimalizam/gissuel && bundle install`
+- `gem install gissuel`
 - Create GH token with `repo` access
 `Settings` > `Developer settings` > `Personal access tokens`
 - Export `GITHUB_TOKEN` token to environment
-- Run `gissuel/issues.rb [label] [repo-name]`
+
+## Usage
+
+- Run `gissuel get --label [label] --repo [repo-name]`
 
     For example, I added lines similar to the following to my `.zshrc` file
 
     ```
     export GITHUB_TOKEN="XXXXXXXXXXXXX"
-    gissuel/issues.rb "planned" "semaphoreci/semaphore"
+    gissuel planned semaphoreci/semaphore
     ```
+- Options `--label` and `--repo` are optional

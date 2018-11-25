@@ -1,0 +1,2 @@
+module Gissuel
+end

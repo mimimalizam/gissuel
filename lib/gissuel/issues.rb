@@ -3,10 +3,11 @@ module Gissuel
 
     TOKEN = ENV["GITHUB_TOKEN"]
     
-    def initialize(label, repo)
+    def initialize(label, repo, body)
       @label = label
       @repo  = repo
       @state = "open"
+      @body  = body
     end
 
     def publish
@@ -57,7 +58,7 @@ module Gissuel
     def report_issue(issue)
       Gissuel::Log.new("TITLE: #{issue.title}").yellow
       Gissuel::Log.new("URL: #{issue.html_url}").blue
-      Gissuel::Log.new("BODY: #{issue.body}").grey
+      Gissuel::Log.new("BODY: #{issue.body}").grey if @body
       Gissuel::Log.new("No of comments: #{issue.comments} | Updated at: #{issue.updated_at}\n").green
     end
 

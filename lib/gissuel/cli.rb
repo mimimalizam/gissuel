@@ -1,7 +1,7 @@
 module Gissuel
 
   class CLI < Thor
-    attr_reader :label, :repo, :body
+    attr_reader :label, :repo, :body, :index
 
     desc "get", "will print out list of issues assigned to you"
 
@@ -18,12 +18,14 @@ module Gissuel
     option :label
     option :repo
     option :body, :lazy_default => true, :default => false, :type => :boolean
+    option :index, :default => 0, :type => :numeric
     def get
       @label = options[:label]
-      @repo = options[:repo]
-      @body = options[:body]
+      @repo  = options[:repo]
+      @body  = options[:body]
+      @index = options[:index]
 
-      Gissuel::Issues.new(label, repo, body).publish
+      Gissuel::Issues.new(label, repo, body, index).publish
     end
 
     desc "version", "Prints the haskii version info"

@@ -17,7 +17,11 @@ module Gissuel
 
     option :label
     option :repo
-    option :verbose, :lazy_default => true, :default => false, :type => :boolean
+    option :verbose, 
+      :lazy_default => true, 
+      :default => false, 
+      :type => :boolean,
+      :aliases => "-v"
     option :index, :default => 0, :type => :numeric
     def get
       @label = options[:label]
